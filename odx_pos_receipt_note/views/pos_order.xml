@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="pos_order_note_only_form_inherit" model="ir.ui.view">
+            <field name="name">view.pos.template.form.inherit</field>
+            <field name="model">pos.order</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook/page[@name='products']/field[@name='lines']/tree/field[@name='full_product_name']" position="after">
+                    <field name="note" string="Note"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
