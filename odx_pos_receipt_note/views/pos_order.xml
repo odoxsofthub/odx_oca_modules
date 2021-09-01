@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-        <record id="pos_order_note_only_form_inherit" model="ir.ui.view">
-            <field name="name">view.pos.template.form.inherit</field>
+        <record id="pos_order_note_only_form_inherited" model="ir.ui.view">
+            <field name="name">view.pos.template.form.inherited</field>
             <field name="model">pos.order</field>
             <field name="type">form</field>
             <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>

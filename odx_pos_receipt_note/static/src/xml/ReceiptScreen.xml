@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension" owl="1">
-    	<xpath expr="//div[hasclass('orderlines')]/t/t" position="inside">
+    	<xpath expr="//div[hasclass('orderlines')]/t//t[2]" position="after">
             <t t-if="line.note">
                 <li class="info orderline-note">
                     <i class="fa fa-tag" role="img" aria-label="Note" title="Note"/>
