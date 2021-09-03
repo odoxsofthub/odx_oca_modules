@@ -10,10 +10,5 @@ odoo.define("odx_pos_receipt_note.models", function (require) {
             res.note = this.note;
             return res;
      },
-
     });
-
-
-
-
 });

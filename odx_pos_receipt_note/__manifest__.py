@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Notes in POS receipt',
-    'version': '14.0.3.0',
+    'version': '13.0.1.0',
     'summary': """
       Add notes in POS receipt
        """,

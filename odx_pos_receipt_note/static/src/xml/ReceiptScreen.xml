@@ -5,7 +5,8 @@
             <t t-if="line.note">
                 <li class="info orderline-note">
                     <i class="fa fa-tag" role="img" aria-label="Note" title="Note"/>
-                    <i><t t-esc="line.note" /></i>
+                        <i><t t-esc="line.note" /></i>
+
                 </li>
             </t>
     	</xpath>
