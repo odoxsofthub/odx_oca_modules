@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="send_notice_wiz_form_view" model="ir.ui.view">
+        <field name="name">send.notice.form</field>
+        <field name="model">send.notice.wiz</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="subject"/>
+                        <field name="user_ids" widget="many2many_tags"/>
+                        <field name="notice_content"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_send_by_mail" class="btn btn-primary" type="object">Send</button>
+                    <button special="cancel" class="btn btn-light">Cancel</button>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

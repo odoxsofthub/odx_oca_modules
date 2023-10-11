@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--    tree view start-->
+
+        <record id="configuration_view_tree" model="ir.ui.view">
+            <field name="name">configuration_view_tree</field>
+            <field name="model">odx.notice.type</field>
+            <field name="arch" type="xml">
+                <tree multi_edit="1">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+<!--    tree view end-->
+
+<!--    form view start-->
+
+        <record id="configuration_view_form" model="ir.ui.view">
+            <field name="name">configuration_view_form</field>
+            <field name="model">odx.notice.type</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+<!--    form view end-->
+
+          <record id="open_view_configuration_action" model="ir.actions.act_window">
+            <field name="name">Configuration</field>
+            <field name="res_model">odx.notice.type</field>
+            <field name="view_mode">tree,form</field>
+          </record>
+    </data>
+
+</odoo>
