@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record model="ir.module.category" id="odx_announcements_management">
+        <field name="name">Approver</field>
+        <field name="description">User access level for Overtime module</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="notice_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="odx_announcements_management"/>
+    </record>
+
+
+    <record id="notice_admin" model="res.groups">
+        <field name="name">Admin</field>
+        <field name="category_id" ref="odx_announcements_management"/>
+        <field name="implied_ids" eval="[(4, ref('odx_backend_notice_board.notice_user'))]"/>
+    </record>
+    <record id="notice_board_see_all" model="ir.rule">
+        <field name="name">All Notice</field>
+        <field ref="model_odx_notice_board" name="model_id"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('odx_backend_notice_board.notice_admin'))]"/>
+    </record>
+
+
+    <record id="notice_board_user_rule" model="ir.rule">
+        <field name="name">Notice User</field>
+        <field ref="model_odx_notice_board" name="model_id"/>
+        <field name="domain_force">['|', ('notify_group_id.users.id', 'in', [user.id]), ('notify_group_id', '=',
+            False)]
+        </field>
+        <field name="groups" eval="[(4, ref('odx_backend_notice_board.notice_user'))]"/>
+
+    </record>
+
+
+
+</odoo>

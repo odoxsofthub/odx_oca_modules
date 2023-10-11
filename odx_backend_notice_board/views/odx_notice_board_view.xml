@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="odx_notice_kanban_view_user" model="ir.ui.view">
+            <field name="name">odx.notice.board.kanban</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <kanban create="false" delete="0" edit="false">
+                    <field name="name"/>
+                    <field name="notice_title"/>
+                    <field name="notice_description"/>
+                    <field name="published_date"/>
+                    <field name="state"/>
+                    <field name="priority" widget="priority"/>
+                    <widget name="web_ribbon" text="New" bg_color="bg-danger"/>
+                    <templates>
+
+                        <t t-name="kanban-box">
+
+                            <div class="oe_kanban_card" style="height:250px; float:left;">
+                                <field name="badge_focus" invisible="1"/>
+                                <field name="badge_color" invisible="1"/>
+                                <div attrs="{'invisible': [('badge_focus', '!=', True)]}">
+                                    <div t-att-class="'odx_kanban_ribbon odx-ribbon-top-left ' + record.badge_color.value">
+                                        <!--                        <span t-field="record.badge_text"/>-->
+                                        <span t-att-class="record.badge_color.value" t-esc="record.badge_text.value">
+                                            <field name="badge_text"/>
+                                        </span>
+
+                                    </div>
+                                </div>
+                                <div style="position:absolute;right:14px;">
+                                    <field name="priority" widget="priority" readonly="1"/>
+                                </div>
+                                <div t-if="record.name.value">
+                                    <button name="notice_view_form" type="object" title="Click to View"
+                                            style="background:#FFFF73; text-align:right;float: right;margin-top: 23px;border: none; border-radius:7px;">
+                                        <img src="/odx_backend_notice_board/static/src/img/hand-index.svg"/>
+                                        <t t-esc="record.name.value"/>
+                                    </button>
+                                </div>
+
+                                <div class="card-details" style="margin-top:62px;">
+                                    <div class="card-title" style="display: flex; justify-content: space-between;">
+                                        <div class="oe_kanban_card_title" style="color:#5f5e97; text-align:left;">
+                                            <span>Title</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="oe_kanban_card_title" t-if="record.notice_title.value">
+                                        <t t-esc="record.notice_title.value"/>
+                                    </div>
+                                    <div class="oe_kanban_card_title" t-if="record.notice_description.value"
+                                         style="border:10px;height:100px;display:flow-root;width:300px;overflow: hidden !important; text-overflow: ellipsis;">
+                                        <t t-raw="record.notice_description.value"/>
+                                    </div>
+                                    <div style="position: absolute; bottom: 5px;padding:5px;right:0;display:none;">
+
+                                        <button name="notice_view_form" type="object"
+                                                style="border:none;background:none;">
+                                            <i class="fa fa-clipboard" style="font-size:24px;"/>
+                                        </button>
+                                    </div>
+                                    <div t-if="record.published_date.value"
+                                         style=" position: absolute; bottom: 0;font-size:11px;">
+                                        <t t-esc="record.published_date.value"/>
+
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+
+        <record id="odx_notice_board_view_form" model="ir.ui.view">
+            <field name="name">odx_notice_board_view_form</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <form edit="false" create="false" delete="0">
+                    <sheet>
+                        <div class="oe_title" style="float:right;">
+                            <h4 class="text-primary">
+                                <field name="name" readonly="1"/>
+                            </h4>
+                            <br></br>
+                        </div>
+
+                        <div class="oe_title">
+                            <label for="notice_title" string="Title"/>
+                            <br/>
+                            <field name="notice_title" readonly="1"/>
+                        </div>
+
+                        <field name="notice_description" readonly="1"/>
+                        <field name="published_date" invisible="1"/>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!--        wizard form  view-->
+
+        <record id="odx_notice_board_view_form_wizard" model="ir.ui.view">
+            <field name="name">odx_notice_board_view_form</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <form edit="false" create="false" delete="0">
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="notice_title" string="Title"/>
+                            <br/>
+                            <field name="notice_title" readonly="1"/>
+                        </div>
+
+                        <field name="notice_description" readonly="1"/>
+                        <field name="published_date" invisible="1"/>
+
+
+                    </sheet>
+                    <footer>
+                        <div>
+                            <button string="Close" class="btn-secondary" special="cancel"/>
+                        </div>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="open_view_notice_action_2" model="ir.actions.act_window">
+            <field name="name">Notice Board</field>
+            <field name="res_model">odx.notice.board</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="domain">[('state','=','published')]</field>
+            <field name="context">{'default_menu_1':False}</field>
+            <field name="view_mode">kanban,form</field>
+        </record>
+
+
+        <record id="open_view_notice_board_kanban" model="ir.actions.act_window.view">
+            <field eval="25" name="sequence"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="odx_notice_kanban_view_user"/>
+            <field name="act_window_id" ref="open_view_notice_action_2"/>
+        </record>
+
+
+        <record id="open_view_notice_board_form" model="ir.actions.act_window.view">
+            <field eval="30" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="odx_notice_board_view_form"/>
+            <field name="act_window_id" ref="open_view_notice_action_2"/>
+        </record>
+    </data>
+</odoo>

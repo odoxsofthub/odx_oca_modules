@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_odx_notice_board_1,odx_notice_board,model_odx_notice_board,base.group_user,1,1,1,1
+access_odx_notice_type_4,odx_notice_type,model_odx_notice_type,base.group_user,1,1,1,1
