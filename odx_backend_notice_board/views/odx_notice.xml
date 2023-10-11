@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="odx_notice_view_tree" model="ir.ui.view">
+            <field name="name">odx_notice_view_tree_1</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="state == 'done'" decoration-danger="state == 'unpublished'" multi_edit="1">
+                    <field name="name" string="Reference"/>
+                    <field name="notice_title"/>
+                    <field name="notice_description" optional="hide"/>
+                    <field name="notice_type" string="Category"/>
+                    <field name="attachments"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="odx_notice_kanban_view_admin" model="ir.ui.view">
+            <field name="name">odx.notice.board.kanban</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="notice_title"/>
+                    <field name="notice_description"/>
+                    <field name="published_date"/>
+                    <field name="state"/>
+                    <field name="priority" widget="priority"/>
+                    <widget name="web_ribbon" text="New" bg_color="bg-danger"/>
+                    <templates>
+                        <t t-name="kanban-box">
+
+                                <div class="oe_kanban_card oe_kanban_global_click" style="height:250px; float:left;">
+                                    <field name="badge_focus" invisible="1"/>
+                                    <field name="badge_color" invisible="1"/>
+
+                                    <div style="position:absolute;right:14px;">
+                                        <field name="priority" widget="priority" readonly="1"/>
+                                    </div>
+                                    <div t-if="record.name.value">
+                                        <button name="notice_view_form" type="object" title="Click to View"
+                                                style="background:#FFFF73; text-align:right;float: right;margin-top: 23px;border: none; border-radius:7px;">
+                                                <img src="/odx_backend_notice_board/static/src/img/hand-index.svg"/>
+                                            <t t-esc="record.name.value"/>
+                                        </button>
+                                    </div>
+
+                                    <div class="card-details" style="margin-top:62px;">
+                                        <div class="card-title" style="display: flex; justify-content: space-between;">
+                                            <div class="oe_kanban_card_title" style="color:#5f5e97; text-align:left;">
+                                                <span>Title</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="oe_kanban_card_title" t-if="record.notice_title.value">
+                                            <t t-esc="record.notice_title.value"/>
+                                        </div>
+                                        <div class="oe_kanban_card_title" t-if="record.notice_description.value"
+                                             style="border:10px;height:100px;display:flow-root;width:300px;overflow: hidden !important; text-overflow: ellipsis;">
+                                            <t t-raw="record.notice_description.value"/>
+                                        </div>
+                                        <div style="position: absolute; bottom: 5px;padding:5px;right:0;display:none;">
+
+                                            <button name="notice_view_form" type="object"
+                                                    style="border:none;background:none;">
+                                                <i class="fa fa-clipboard" style="font-size:24px;"/>
+                                            </button>
+                                        </div>
+                                        <div t-if="record.published_date.value"
+                                             style=" position: absolute; bottom: 0;font-size:11px;">
+                                            <t t-esc="record.published_date.value"/>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="odx_notice_view_form" model="ir.ui.view">
+            <field name="name">odx_notice_view_form</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button id="button_confirm" name="action_done" string="Publish" class="btn-primary"
+                                states="draft"
+                                type="object"/>
+                        <button id="button_draft" name="action_draft" string="Set To Draft" class="btn-primary"
+                                states="unpublished"
+                                type="object"/>
+                        <button class="btn-danger" id="button_cancel" name="action_cancel" string="Unpublish"
+                                states="published"
+                                type="object"/>
+                        <button attrs="{'invisible': [('state', '!=', 'published')]}" class="btn btn-light"
+                                name="send_by_mail" string="Sent by Mail" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,published"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h4 class="text-primary">
+                                <field name="name" readonly="1"/>
+                            </h4>
+                            <br></br>
+                        </div>
+                        <group>
+                            <field attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}" name="notice_title"/>
+                        </group>
+                        <group>
+                            <group>
+                                <field attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}" name="notice_category"/>
+                            </group>
+                        </group>
+
+                        <group>
+                            <field name="notice_type" invisible="1"/>
+                            <field name="active" invisible="1"/>
+                            <field name="published_date" invisible="1"/>
+                            <field name="priority" widget="priority"
+                                   attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}"/>
+                            <field name="email_status"/>
+                        </group>
+
+                        <notebook>
+                            <page class="text-primary" name="notice_description" string="Contents">
+                                <field attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}" name="notice_description"/>
+                            </page>
+
+                            <page class="text-primary" name="note" string="Note">
+                                <field attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}" name="announcement"/>
+                            </page>
+
+                            <page class="text-primary" name="visibility" string="Visibility">
+
+                                <group>
+                                    <group string="Allowed Users">
+                                        <field name="notify_group_id"
+                                               attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}"/>
+                                    </group>
+                                    <group string="Badge Settings">
+                                        <field name="badge_focus"/>
+                                        <field name="badge_text"/>
+                                        <field name="badge_color"/>
+                                        <field name="start_date" string="Date   "/>
+                                        <field name="end_date" string="End"/>
+
+                                    </group>
+                                </group>
+                            </page>
+                            <page class="text-primary" name="attachments" string="Attachments">
+                                <field attrs="{'readonly': ['|', ('state', '=', 'published'), ('state', '=', 'unpublished')]}" name="attachments"
+                                       widget="many2many_binary"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        <record id="ir_notice_view_search" model="ir.ui.view">
+            <field name="model">odx.notice,filters</field>
+            <field name="type">search</field>
+            <field name="model">odx.notice.board</field>
+            <field name="arch" type="xml">
+                <search string="Filters">
+                    <filter name="state" string="Published" domain="[('state','=','published')]"/>
+                    <field name="name"/>
+                    <field name="notice_title"/>
+                    <field name="notice_description"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Category" name="notice_type" context="{'group_by': 'notice_category'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="open_view_notice_action_1" model="ir.actions.act_window">
+            <field name="name">Notice Admin</field>
+            <field name="res_model">odx.notice.board</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,kanban,form</field>
+
+        </record>
+
+        <record id="open_view_notice_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="odx_notice_view_tree"/>
+            <field name="act_window_id" ref="open_view_notice_action_1"/>
+        </record>
+
+        <record id="open_view_notice_board_kanban" model="ir.actions.act_window.view">
+            <field eval="25" name="sequence"/>
+            <field name="view_mode">kanban</field>
+            <field name="view_id" ref="odx_notice_kanban_view_admin"/>
+            <field name="act_window_id" ref="open_view_notice_action_1"/>
+        </record>
+
+        <record id="open_view_notice_form" model="ir.actions.act_window.view">
+            <field eval="2" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="odx_notice_view_form"/>
+            <field name="act_window_id" ref="open_view_notice_action_1"/>
+        </record>
+
+    </data>
+</odoo>

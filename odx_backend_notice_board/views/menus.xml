@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        #main menu-->
+        <menuitem
+                id="menu_notice_board"
+                name = "Notice Board"
+                action="open_view_notice_action_2"
+                web_icon="odx_backend_notice_board,static/description/icon (1).png"/>
+
+        <menuitem
+            id="menu_backend_notice"
+            name="Notice"
+            sequence="0"
+            parent="menu_notice_board"
+            action="open_view_notice_action_2"
+            groups="odx_backend_notice_board.notice_user"/>
+
+        <menuitem id="menu_admin_backend_notice_board"
+          name = "All Notice"
+          sequence="1"
+          action = "open_view_notice_action_1"
+          parent = "menu_notice_board"
+          groups="odx_backend_notice_board.notice_admin"/>
+
+         <menuitem name="Configuration"
+            id="menu_action_menu_Configuration"
+            parent="menu_notice_board"
+            action="open_view_configuration_action"
+            sequence="3"
+            groups="odx_backend_notice_board.notice_admin"/>
+
+    </data>
+</odoo>
